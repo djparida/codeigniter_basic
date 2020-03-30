@@ -1,0 +1,34 @@
+<?php
+class album_model extends CI_Model{
+    
+    public function get_album(){
+        if(!empty($this->input->get("search"))){
+          $this->db->like('title', $this->input->get("search"));
+          $this->db->or_like('permalink', $this->input->get("search")); 
+        }
+        $query = $this->db->get("album");
+        return $query->result();
+    }
+    public function insert_product()
+    {    
+        $data = array(
+            'title' => $this->input->post('title'),
+            'permalink' => $this->input->post('permalink')
+        );
+        return $this->db->insert('album', $data);
+    }
+    public function album($id) 
+    {
+        $data=array(
+            'title' => $this->input->post('title'),
+            'permalink'=> $this->input->post('permalink')
+        );
+        if($id==0){
+            return $this->db->insert('album',$data);
+        }else{
+            $this->db->where('id',$id);
+            return $this->db->update('album',$data);
+        }        
+    }
+}
+?>
